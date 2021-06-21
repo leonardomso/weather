@@ -18,7 +18,7 @@ const WeatherCard = ({ unit, data, slideNumber }: Props) => {
     <Grid
       className={`keen-slider__slide number-slide${slideNumber}`}
       width="100%"
-      maxW="180px"
+      maxW="fit-content"
       height="fit-content"
       templateRows="repeat(3, max-content)"
       gap={5}

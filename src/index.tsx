@@ -4,6 +4,8 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { ChakraProvider, theme } from "@chakra-ui/react";
 
+import "keen-slider/keen-slider.min.css";
+
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
