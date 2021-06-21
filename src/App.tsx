@@ -1,25 +1,22 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Suspense } from 'react';
+import { Box, Spinner } from "@chakra-ui/react";
+import { ErrorBoundary } from "react-error-boundary";
+import { useQueryErrorResetBoundary } from "react-query";
 
-function App() {
+import WeatherInfo from 'src/modules/WeatherInfo/WeatherInfo';
+import ErrorFallback from "src/components/ErrorFallback/ErrorFallback";
+
+const App = () => {
+  const { reset } = useQueryErrorResetBoundary();
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Box display="flex" width="100%" height="100vh" alignItems="center" justifyContent="center">
+      <ErrorBoundary FallbackComponent={ErrorFallback} onReset={reset}>
+        <Suspense fallback={<Spinner />}>
+          <WeatherInfo />
+        </Suspense>
+      </ErrorBoundary>
+    </Box>
   );
 }
 
