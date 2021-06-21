@@ -22,7 +22,7 @@ const useEpisodes = (units: string) => {
       suspense: true,
       useErrorBoundary: true,
       refetchOnWindowFocus: false,
-    }
+    },
   );
 };
 
