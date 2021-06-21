@@ -3,21 +3,28 @@ import { Box, Grid } from "@chakra-ui/react";
 import { useKeenSlider } from "keen-slider/react";
 import "keen-slider/keen-slider.min.css";
 
-import TemperatureButtons from "../../components/TemperatureButtons/TemperatureButtons";
+import UnitCheckboxes from "../../components/UnitCheckboxes/UnitCheckboxes";
 import ArrowsButtons from "../../components/ArrowsButtons/ArrowsButtons";
 import WeatherForecastItem from "../../components/WeatherForecastItem/WeatherForecastItem";
 
-import { useWeather } from "src/queries/";
+import { useWeather, WeatherItem } from "src/queries/";
 
 const WeatherInfo = () => {
-  const [temperature, setTemperature] = useState<"metric" | "imperial">("metric");
+  const [unit, setUnit] = useState<"metric" | "imperial">("metric");
 
-  const onChangeTemperature = () => {
-    if (temperature === "metric") setTemperature("imperial");
-    else setTemperature("metric");
+  const onChangeUnit = () => {
+    if (unit === "metric") setUnit("imperial");
+    else setUnit("metric");
   };
 
-  const { data } = useWeather(temperature);
+  const { data } = useWeather(unit);
+
+  // We need to filter the data because the OpenWeather API
+  // returns an unfiltered array.
+  // We're filtering the array by day here to show it in the cards.
+  const filteredData = data.list.filter((day: WeatherItem) => {
+    return day.dt_txt.endsWith("15:00:00")
+  })
 
   const [currentSlide, setCurrentSlide] = useState<number>(0);
   const [sliderRef, slider] = useKeenSlider<HTMLDivElement>({
@@ -42,9 +49,9 @@ const WeatherInfo = () => {
 
   return (
     <Grid templateRows="max-content max-content max-content" gap={5} width="100%" height="100vh" maxW="600px" margin="0 auto">
-      <TemperatureButtons
-        temperature={temperature}
-        onChangeTemperature={onChangeTemperature}
+      <UnitCheckboxes
+        unit={unit}
+        onChangeUnit={onChangeUnit}
       />
 
       <ArrowsButtons
@@ -55,15 +62,7 @@ const WeatherInfo = () => {
       />
 
       <Box ref={sliderRef} className="keen-slider">
-        <WeatherForecastItem slideNumber={1} />
-        <WeatherForecastItem slideNumber={2} />
-        <WeatherForecastItem slideNumber={3} />
-        <WeatherForecastItem slideNumber={4} />
-        <WeatherForecastItem slideNumber={5} />
-        <WeatherForecastItem slideNumber={6} />
-        <WeatherForecastItem slideNumber={7} />
-        <WeatherForecastItem slideNumber={8} />
-        <WeatherForecastItem slideNumber={9} />
+        {filteredData.map((item: WeatherItem, index: number) => <WeatherForecastItem key={item.dt} data={item} slideNumber={index} unit={unit} />)}
       </Box>
     </Grid>
   );
