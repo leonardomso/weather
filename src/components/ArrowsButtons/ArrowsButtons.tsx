@@ -2,7 +2,7 @@ import React from 'react';
 import { Grid, IconButton } from "@chakra-ui/react";
 import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
 
-interface Props {
+type Props = {
   previousSlide: (e: any) => void;
   nextSlide: (e: any) => void;
   isFirst: boolean;

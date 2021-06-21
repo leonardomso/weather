@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { QueryClient, QueryClientProvider } from "react-query";
+import { ReactQueryDevtools } from 'react-query/devtools'
 import { ChakraProvider, theme } from "@chakra-ui/react";
 
 import App from './App';
@@ -20,6 +21,7 @@ ReactDOM.render(
     <QueryClientProvider client={queryClient}>
       <ChakraProvider theme={theme}>
         <App />
+        <ReactQueryDevtools />
       </ChakraProvider>
     </QueryClientProvider>
   </React.StrictMode>,

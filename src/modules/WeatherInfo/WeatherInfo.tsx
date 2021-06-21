@@ -1,7 +1,7 @@
-import React from 'react';
+import { useState } from 'react';
 import { Box, Grid } from "@chakra-ui/react";
-import { useKeenSlider } from "keen-slider/react"
-import "keen-slider/keen-slider.min.css"
+import { useKeenSlider } from "keen-slider/react";
+import "keen-slider/keen-slider.min.css";
 
 import TemperatureButtons from "../../components/TemperatureButtons/TemperatureButtons";
 import ArrowsButtons from "../../components/ArrowsButtons/ArrowsButtons";
@@ -10,9 +10,16 @@ import WeatherForecastItem from "../../components/WeatherForecastItem/WeatherFor
 import { useWeather } from "src/queries/";
 
 const WeatherInfo = () => {
-  const { data } = useWeather();
+  const [temperature, setTemperature] = useState<"metric" | "imperial">("metric");
 
-  const [currentSlide, setCurrentSlide] = React.useState<number>(0);
+  const onChangeTemperature = () => {
+    if (temperature === "metric") setTemperature("imperial");
+    else setTemperature("metric");
+  };
+
+  const { data } = useWeather(temperature);
+
+  const [currentSlide, setCurrentSlide] = useState<number>(0);
   const [sliderRef, slider] = useKeenSlider<HTMLDivElement>({
     initial: 0,
     slidesPerView: 3,
@@ -35,7 +42,10 @@ const WeatherInfo = () => {
 
   return (
     <Grid templateRows="max-content max-content max-content" gap={5} width="100%" height="100vh" maxW="600px" margin="0 auto">
-      <TemperatureButtons />
+      <TemperatureButtons
+        temperature={temperature}
+        onChangeTemperature={onChangeTemperature}
+      />
 
       <ArrowsButtons
         previousSlide={previousSlide}
@@ -45,15 +55,15 @@ const WeatherInfo = () => {
       />
 
       <Box ref={sliderRef} className="keen-slider">
-        <WeatherForecastItem number={1} />
-        <WeatherForecastItem number={2} />
-        <WeatherForecastItem number={3} />
-        <WeatherForecastItem number={4} />
-        <WeatherForecastItem number={5} />
-        <WeatherForecastItem number={6} />
-        <WeatherForecastItem number={7} />
-        <WeatherForecastItem number={8} />
-        <WeatherForecastItem number={9} />
+        <WeatherForecastItem slideNumber={1} />
+        <WeatherForecastItem slideNumber={2} />
+        <WeatherForecastItem slideNumber={3} />
+        <WeatherForecastItem slideNumber={4} />
+        <WeatherForecastItem slideNumber={5} />
+        <WeatherForecastItem slideNumber={6} />
+        <WeatherForecastItem slideNumber={7} />
+        <WeatherForecastItem slideNumber={8} />
+        <WeatherForecastItem slideNumber={9} />
       </Box>
     </Grid>
   );
