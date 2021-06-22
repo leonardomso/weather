@@ -8,10 +8,10 @@ type Props = {
   unit: "metric" | "imperial";
   item: WeatherItem;
   slideNumber: number;
-  onSelectItem: (item: WeatherItem) => void;
+  onSelectDay: (item: WeatherItem) => void;
 };
 
-const WeatherCard = ({ unit, item, slideNumber, onSelectItem }: Props) => {
+const WeatherCard = ({ unit, item, slideNumber, onSelectDay }: Props) => {
   const formatDate = Date.parse(item.dt_txt);
   const formatTemperature = unit === "metric" ? "°C" : "°F";
 
@@ -38,7 +38,7 @@ const WeatherCard = ({ unit, item, slideNumber, onSelectItem }: Props) => {
       _active={{
         background: "gray.50",
       }}
-      onClick={() => onSelectItem(item)}
+      onClick={() => onSelectDay(item)}
     >
       <Heading fontSize="20px" isTruncated>
         {format(formatDate, "ii, EE")}
