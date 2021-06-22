@@ -6,9 +6,9 @@ import {
   ErrorFallbackInnerContainer,
 } from "./ErrorFallback.styles";
 
-interface Props {
+type Props = {
   resetErrorBoundary: (...args: unknown[]) => void;
-}
+};
 
 const ErrorFallback = ({ resetErrorBoundary }: Props) => (
   <ErrorFallbackContainer role="alert">
