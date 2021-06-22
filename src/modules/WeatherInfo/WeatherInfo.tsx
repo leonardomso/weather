@@ -81,7 +81,7 @@ const WeatherInfo = () => {
         isLast={isLast}
       />
 
-      <Box ref={sliderRef} className="keen-slider">
+      <Box width="100%" maxW="600px" ref={sliderRef} className="keen-slider">
         {filteredData.map((item: WeatherItem, index: number) => (
           <WeatherCard
             key={item.dt}
@@ -92,7 +92,7 @@ const WeatherInfo = () => {
         ))}
       </Box>
 
-      <Box>
+      <Box width="100%" maxW="600px">
         <ResponsiveBar
           data={tempData}
           keys={["temp"]}

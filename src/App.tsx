@@ -1,9 +1,10 @@
 import { Suspense } from "react";
-import { Box, Spinner } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import { ErrorBoundary } from "react-error-boundary";
 import { useQueryErrorResetBoundary } from "react-query";
 
 import WeatherInfo from "src/modules/WeatherInfo/WeatherInfo";
+import WeatherInfoSkeleton from "src/components/WeatherInfoSkeleton/WeatherInfoSkeleton";
 import ErrorFallback from "src/components/ErrorFallback/ErrorFallback";
 
 const App = () => {
@@ -18,7 +19,7 @@ const App = () => {
       justifyContent="center"
     >
       <ErrorBoundary FallbackComponent={ErrorFallback} onReset={reset}>
-        <Suspense fallback={<Spinner />}>
+        <Suspense fallback={<WeatherInfoSkeleton />}>
           <WeatherInfo />
         </Suspense>
       </ErrorBoundary>
