@@ -9,7 +9,7 @@ type FilteredList = Array<{
 }>;
 
 const useChartList = (data: WeatherResult) => {
-  const [list, setList] = useState<Array<any>>([]);
+  const [list, setList] = useState<FilteredList>([]);
 
   useEffect(() => {
     const filteredList: FilteredList = data.list.map((day: WeatherItem) => {
