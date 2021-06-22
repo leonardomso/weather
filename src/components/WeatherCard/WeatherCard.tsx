@@ -6,13 +6,14 @@ import { WeatherItem } from "src/queries/";
 
 type Props = {
   unit: "metric" | "imperial";
-  data: WeatherItem;
+  item: WeatherItem;
   slideNumber: number;
+  onSelectItem: (item: WeatherItem) => void;
 };
 
-const WeatherCard = ({ unit, data, slideNumber }: Props) => {
-  const formatDate = Date.parse(data.dt_txt);
-  const formatTemperature = () => (unit === "metric" ? "°C" : "°F");
+const WeatherCard = ({ unit, item, slideNumber, onSelectItem }: Props) => {
+  const formatDate = Date.parse(item.dt_txt);
+  const formatTemperature = unit === "metric" ? "°C" : "°F";
 
   return (
     <Grid
@@ -27,17 +28,28 @@ const WeatherCard = ({ unit, data, slideNumber }: Props) => {
       borderRadius="5px"
       alignItems="center"
       justifyItems="center"
+      cursor="pointer"
+      _hover={{
+        background: "gray.50",
+      }}
+      _focus={{
+        background: "gray.50",
+      }}
+      _active={{
+        background: "gray.50",
+      }}
+      onClick={() => onSelectItem(item)}
     >
       <Heading fontSize="20px" isTruncated>
         {format(formatDate, "ii, EE")}
       </Heading>
 
       <Heading fontSize="30px" isTruncated>{`${Math.round(
-        data.main.temp,
-      )}${formatTemperature()}`}</Heading>
+        item.main.temp,
+      )}${formatTemperature}`}</Heading>
 
       <Image
-        src={`http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`}
+        src={`http://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png`}
         alt="Weather icon"
       />
     </Grid>

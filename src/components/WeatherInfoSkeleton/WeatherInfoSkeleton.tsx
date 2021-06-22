@@ -108,7 +108,7 @@ const WeatherInfoSkeleton = () => {
       <Grid
         width="100%"
         maxW="fit-content"
-        height="250px"
+        height="300px"
         templateColumns="repeat(12, 1fr)"
         gap={5}
         alignItems="end"

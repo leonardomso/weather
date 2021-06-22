@@ -3,10 +3,10 @@ import { Grid, Checkbox } from "@chakra-ui/react";
 
 type Props = {
   unit: string;
-  onChangeUnit: () => void;
+  changeUnit: () => void;
 };
 
-const UnitCheckboxes = ({ unit, onChangeUnit }: Props) => {
+const UnitCheckboxes = ({ unit, changeUnit }: Props) => {
   return (
     <Grid
       width="100%"
@@ -18,15 +18,11 @@ const UnitCheckboxes = ({ unit, onChangeUnit }: Props) => {
       alignItems="center"
       justifyItems="center"
     >
-      <Checkbox size="lg" isChecked={unit === "metric"} onChange={onChangeUnit}>
+      <Checkbox size="lg" isChecked={unit === "metric"} onChange={changeUnit}>
         Celsius
       </Checkbox>
 
-      <Checkbox
-        size="lg"
-        isChecked={unit === "imperial"}
-        onChange={onChangeUnit}
-      >
+      <Checkbox size="lg" isChecked={unit === "imperial"} onChange={changeUnit}>
         Fahrenheit
       </Checkbox>
     </Grid>

@@ -1,24 +1,21 @@
-import { useState } from "react";
 import { Box, Grid } from "@chakra-ui/react";
-import { useKeenSlider } from "keen-slider/react";
 import { ResponsiveBar } from "@nivo/bar";
-import { format } from "date-fns";
 
-import UnitCheckboxes from "../../components/UnitCheckboxes/UnitCheckboxes";
-import ArrowsButtons from "../../components/ArrowsButtons/ArrowsButtons";
-import WeatherCard from "../../components/WeatherCard/WeatherCard";
+import UnitCheckboxes from "src/components/UnitCheckboxes/UnitCheckboxes";
+import ArrowsButtons from "src/components/ArrowsButtons/ArrowsButtons";
+import WeatherCard from "src/components/WeatherCard/WeatherCard";
 
 import { useWeather, WeatherItem } from "src/queries/";
 
+import useUnit from "src/hooks/useUnit";
+import useChartList from "src/hooks/useChartList";
+import useSlide from "src/hooks/useSlide";
+
 const WeatherInfo = () => {
-  const [unit, setUnit] = useState<"metric" | "imperial">("metric");
-
-  const onChangeUnit = () => {
-    if (unit === "metric") setUnit("imperial");
-    else setUnit("metric");
-  };
-
+  const { unit, changeUnit } = useUnit();
   const { data } = useWeather(unit);
+  const { list, onSelectItem } = useChartList(data);
+  const { sliderRef, previousSlide, nextSlide, isFirst, isLast } = useSlide();
 
   // We need to filter the data because the OpenWeather API
   // returns an unfiltered array.
@@ -26,42 +23,6 @@ const WeatherInfo = () => {
   const filteredData = data.list.filter((day: WeatherItem) => {
     return day.dt_txt.endsWith("15:00:00");
   });
-
-  const tempData: Array<{
-    temp: string;
-  }> = data.list.map((day: WeatherItem) => {
-    const formattedDate: number = Date.parse(day.dt_txt);
-
-    return {
-      hour: `${format(formattedDate, "HH")}h`,
-      temp: Math.round(day.main.temp),
-    };
-  });
-
-  const [currentSlide, setCurrentSlide] = useState<number>(0);
-  const [sliderRef, slider] = useKeenSlider<HTMLDivElement>({
-    initial: 0,
-    slidesPerView: 3,
-    spacing: 25,
-    slideChanged(s) {
-      setCurrentSlide(s.details().relativeSlide);
-    },
-  });
-
-  const previousSlide = (e: any) => {
-    e.stopPropagation() || slider.prev();
-  };
-
-  const nextSlide = (e: any) => {
-    e.stopPropagation() || slider.next();
-  };
-
-  // Check if card is the first one to disabled 'previous' button.
-  const isFirst: boolean = currentSlide === 0;
-  // Check if card is the last one to disabled 'next' button.
-  const isLast: boolean =
-    typeof slider?.details().slidesPerView === "number" &&
-    currentSlide === slider?.details().size - slider?.details().slidesPerView;
 
   return (
     <Grid
@@ -72,7 +33,7 @@ const WeatherInfo = () => {
       maxW="600px"
       margin="0 auto"
     >
-      <UnitCheckboxes unit={unit} onChangeUnit={onChangeUnit} />
+      <UnitCheckboxes unit={unit} changeUnit={changeUnit} />
 
       <ArrowsButtons
         previousSlide={previousSlide}
@@ -85,16 +46,17 @@ const WeatherInfo = () => {
         {filteredData.map((item: WeatherItem, index: number) => (
           <WeatherCard
             key={item.dt}
-            data={item}
+            item={item}
             slideNumber={index}
             unit={unit}
+            onSelectItem={onSelectItem}
           />
         ))}
       </Box>
 
       <Box width="100%" maxW="600px">
         <ResponsiveBar
-          data={tempData}
+          data={list}
           keys={["temp"]}
           indexBy="hour"
           margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
