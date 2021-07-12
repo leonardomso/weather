@@ -1,14 +1,16 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { format, isSameDay } from "date-fns";
 
 import { WeatherResult, WeatherItem } from "src/queries/";
+
+import convertTemperature from "src/utils/convertTemperature";
 
 type FilteredList = Array<{
   hour: string;
   temp: number;
 }>;
 
-const useChartList = (data: WeatherResult) => {
+const useChartList = (data: WeatherResult, unit: "metric" | "imperial") => {
   const [list, setList] = useState<FilteredList>([]);
 
   const onSelectDay = (item: WeatherItem) => {
@@ -39,12 +41,12 @@ const useChartList = (data: WeatherResult) => {
 
       return {
         hour: `${format(formattedDate, "HH")}h`,
-        temp: Math.round(day.main.temp),
+        temp: convertTemperature(unit, day.main.temp),
       };
     });
 
     setList(filteredList);
-  }, [data]);
+  }, [data, unit]);
 
   return {
     list,

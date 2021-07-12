@@ -4,6 +4,8 @@ import { format } from "date-fns";
 
 import { WeatherItem } from "src/queries/";
 
+import convertTemperature from "src/utils/convertTemperature";
+
 type Props = {
   unit: "metric" | "imperial";
   item: WeatherItem;
@@ -44,7 +46,8 @@ const WeatherCard = ({ unit, item, slideNumber, onSelectDay }: Props) => {
         {format(formatDate, "ii, EE")}
       </Heading>
 
-      <Heading fontSize="30px" isTruncated>{`${Math.round(
+      <Heading fontSize="30px" isTruncated>{`${convertTemperature(
+        unit,
         item.main.temp,
       )}${formatTemperature}`}</Heading>
 

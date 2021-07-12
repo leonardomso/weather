@@ -13,8 +13,8 @@ import useSlide from "src/hooks/useSlide";
 
 const WeatherInfo = () => {
   const { unit, changeUnit } = useUnit();
-  const { data, refetch } = useWeather(unit);
-  const { list, onSelectDay } = useChartList(data);
+  const { data, refetch } = useWeather();
+  const { list, onSelectDay } = useChartList(data, unit);
   const { sliderRef, previousSlide, nextSlide, isFirst, isLast } = useSlide();
 
   // We need to filter the data because the OpenWeather API
