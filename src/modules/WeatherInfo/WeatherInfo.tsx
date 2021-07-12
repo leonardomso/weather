@@ -1,4 +1,4 @@
-import { Box, Grid } from "@chakra-ui/react";
+import { Box, Grid, Button } from "@chakra-ui/react";
 import { ResponsiveBar } from "@nivo/bar";
 
 import UnitCheckboxes from "src/components/UnitCheckboxes/UnitCheckboxes";
@@ -13,7 +13,7 @@ import useSlide from "src/hooks/useSlide";
 
 const WeatherInfo = () => {
   const { unit, changeUnit } = useUnit();
-  const { data } = useWeather(unit);
+  const { data, refetch } = useWeather(unit);
   const { list, onSelectDay } = useChartList(data);
   const { sliderRef, previousSlide, nextSlide, isFirst, isLast } = useSlide();
 
@@ -28,13 +28,17 @@ const WeatherInfo = () => {
 
   return (
     <Grid
-      templateRows="max-content max-content max-content"
+      templateRows="max-content max-content max-content max-content"
       gap={2}
       width="100%"
       height="100vh"
       maxW="600px"
       margin="0 auto"
     >
+      <Button type="button" onClick={() => refetch()}>
+        Refresh
+      </Button>
+
       <UnitCheckboxes unit={unit} changeUnit={changeUnit} />
 
       <ArrowsButtons
