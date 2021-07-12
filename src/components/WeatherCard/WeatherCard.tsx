@@ -10,12 +10,22 @@ type Props = {
   unit: "metric" | "imperial";
   item: WeatherItem;
   slideNumber: number;
+  selectedDay: WeatherItem;
   onSelectDay: (item: WeatherItem) => void;
 };
 
-const WeatherCard = ({ unit, item, slideNumber, onSelectDay }: Props) => {
+const WeatherCard = ({
+  unit,
+  item,
+  slideNumber,
+  selectedDay,
+  onSelectDay,
+}: Props) => {
   const formatDate = Date.parse(item.dt_txt);
   const formatTemperature = unit === "metric" ? "°C" : "°F";
+
+  const isSameDayItem = (item1: WeatherItem, item2: WeatherItem) =>
+    item1.dt_txt.split(" ")[0] === item2.dt_txt.split(" ")[0];
 
   return (
     <Grid
@@ -31,15 +41,7 @@ const WeatherCard = ({ unit, item, slideNumber, onSelectDay }: Props) => {
       alignItems="center"
       justifyItems="center"
       cursor="pointer"
-      _hover={{
-        background: "gray.50",
-      }}
-      _focus={{
-        background: "gray.50",
-      }}
-      _active={{
-        background: "gray.50",
-      }}
+      bgColor={isSameDayItem(selectedDay, item) ? "gray.100" : "white"}
       onClick={() => onSelectDay(item)}
     >
       <Heading fontSize="20px" isTruncated>

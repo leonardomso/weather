@@ -12,6 +12,7 @@ type FilteredList = Array<{
 
 const useChartList = (data: WeatherResult, unit: "metric" | "imperial") => {
   const [list, setList] = useState<FilteredList>([]);
+  const [selectedDay, setSelectedDay] = useState<WeatherItem>(data.list[0]);
 
   const onSelectDay = (item: WeatherItem) => {
     // Get current day.
@@ -33,6 +34,7 @@ const useChartList = (data: WeatherResult, unit: "metric" | "imperial") => {
     });
 
     setList(filteredDays);
+    setSelectedDay(item);
   };
 
   useEffect(() => {
@@ -50,6 +52,7 @@ const useChartList = (data: WeatherResult, unit: "metric" | "imperial") => {
 
   return {
     list,
+    selectedDay,
     onSelectDay,
   };
 };

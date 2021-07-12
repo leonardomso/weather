@@ -14,7 +14,7 @@ import useSlide from "src/hooks/useSlide";
 const WeatherInfo = () => {
   const { unit, changeUnit } = useUnit();
   const { data, refetch } = useWeather();
-  const { list, onSelectDay } = useChartList(data, unit);
+  const { list, selectedDay, onSelectDay } = useChartList(data, unit);
   const { sliderRef, previousSlide, nextSlide, isFirst, isLast } = useSlide();
 
   // We need to filter the data because the OpenWeather API
@@ -22,7 +22,7 @@ const WeatherInfo = () => {
   // We're filtering the array by day here to show it in the cards.
   const filteredData: Array<WeatherItem> = data.list.filter(
     (day: WeatherItem) => {
-      return day.dt_txt.endsWith("15:00:00");
+      return day.dt_txt.endsWith("21:00:00");
     },
   );
 
@@ -55,6 +55,7 @@ const WeatherInfo = () => {
             item={item}
             slideNumber={index}
             unit={unit}
+            selectedDay={selectedDay}
             onSelectDay={onSelectDay}
           />
         ))}
